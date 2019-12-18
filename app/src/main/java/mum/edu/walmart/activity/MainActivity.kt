@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     var users:List<User>
 
     init {
-        users = mutableListOf(User("Ahmed","Ahmed","a.heshamafify@gmail.com","1234"),
+        users = mutableListOf(User("jo","Ahmed","jo@gmail.com","1234"),
             User("Kalam","Ay","ay.kalam@gmail.com","4321"),
             User("7aga","7elwa","7aga.7elwa@gmail.com","9876"))
 
@@ -25,6 +25,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val intent = getIntent()
+        if (intent != null) {
+            if (intent.getSerializableExtra("user") != null){
+                val user : User = intent.getSerializableExtra("user") as User
+                users = users.plus(user)
+            }
+
+        }
     }
 
     fun validateUser(v: View){
@@ -38,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this,"User not found",Toast.LENGTH_LONG).show()
             }
         } else{
-            Toast.makeText(this,"Please enter valid username",Toast.LENGTH_SHORT).show()
+            email.error = "Please enter valid username"
         }
     }
 
@@ -55,8 +63,14 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(Intent.EXTRA_TEXT, "Kindly find you password : ${user!!.password}")
             startActivity(Intent.createChooser(intent, "Send email..."))
         } else {
-            Toast.makeText(this,"Please enter valid username",Toast.LENGTH_SHORT).show()
+            email.error = "Please enter valid username"
         }
+
+    }
+
+    fun onClickCreateAccount(v : View){
+        val intent = Intent(this,CreateAccount::class.java)
+        startActivity(intent)
 
     }
 
